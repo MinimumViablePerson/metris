@@ -8,15 +8,15 @@ const colors = {
   blue: '#34e',
   yellow: '#3ee',
   orange: '#e93',
-  grey: '#ddd'
+  '': '#ddd'
 }
 
-const Cell = ({ className, piece, rowIndex, colIndex, handleClick }) => {
+const Cell = ({ className, board, piece, rowIndex, colIndex }) => {
   const row = rowIndex - piece.yOffset
   const col = colIndex - piece.xOffset
   const color = piece.shape[row] && piece.shape[row][col]
     ? piece.shape[row][col]
-    : 'grey'
+    : board[rowIndex][colIndex]
 
   return <div
     onClick={actions.piece.moveRight}
@@ -33,6 +33,6 @@ const StyledCell = styled(Cell)`
   height: 20px;
 `
 
-const mapStateToProps = ({ piece }) => ({ piece })
+const mapStateToProps = ({ piece, board }) => ({ piece, board })
 
 export default connect(mapStateToProps)(StyledCell)

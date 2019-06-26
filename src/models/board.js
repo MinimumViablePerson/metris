@@ -2,28 +2,21 @@ import Mirror from 'mirrorx'
 
 const rows = 20
 const columns = 10
-const initialState = [...Array(rows)].map(() => [...Array(columns)])
-
-const colors = ['red', 'green', 'blue', 'yellow', 'orange']
-
-const randomColor = () => colors[Math.floor(Math.random() * colors.length)]
+const initialState = [...Array(rows)].map(() => Array(columns).fill(''))
 
 Mirror.model({
   name: 'board',
   initialState,
   reducers: {
-    fill (board, { rowIndex, colIndex }) {
-      return board.map(
-        (row, rowI) => rowI !== rowIndex ? row : row.map(
-          (col, colI) => colI !== colIndex ? col : randomColor()
-        )
-      )
-    },
-    shift (board) {
-      board = board.slice(0, -1)
-      board.unshift([...Array(columns)])
-      return board
-    },
+    stick(board, piece) {
+      const newBoard = board.map((row, rowIndex) => row.map((cell, cellIndex) => {
+        const row = piece.shape[rowIndex - piece.yOffset] || []
+        const newCell = row[cellIndex - piece.xOffset]
+        return newCell || cell
+      }))
+      console.log({ newBoard })
+      return newBoard
+    }
   },
   effects: {}
 })

@@ -10,10 +10,10 @@ const App = () => {
 
   useEffect(() => {
     const listener = window.addEventListener('keydown', e => {
-      if (e.key === 'ArrowLeft') actions.piece.moveLeft()
-      if (e.key === 'ArrowRight') actions.piece.moveRight()
+      if (e.key === 'ArrowLeft') actions.piece.left()
+      if (e.key === 'ArrowRight') actions.piece.right()
       if (e.key === 'ArrowUp') actions.piece.rotate()
-      if (e.key === 'ArrowDown') actions.piece.moveDown()
+      if (e.key === 'ArrowDown') actions.piece.descend()
     })
     return () => window.removeEventListener('keydown', listener)
   }, [])

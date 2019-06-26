@@ -5,9 +5,8 @@ import styled from 'styled-components'
 import Row from './Row'
 
 const Board = ({ board, className }) => {
-
   useEffect(() => {
-    const handle = setInterval(actions.piece.moveDown, 1000)
+    const handle = setInterval(actions.piece.descend, 1000)
     return () => clearInterval(handle)
   }, [])
 

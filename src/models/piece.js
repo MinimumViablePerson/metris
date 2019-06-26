@@ -1,4 +1,4 @@
-import Mirror from 'mirrorx'
+import Mirror, { actions } from 'mirrorx'
 
 const pieces = [
   {
@@ -57,6 +57,32 @@ const rotateShape = shape => {
 	return rotatedShape
 }
 
+const pieceWillCollideBelow = (piece, board) =>
+  piece.shape.some((row, rowIndex) => row.some(cell => {
+    const nextRow = rowIndex + piece.yOffset + 1
+
+    if (cell === undefined) return false
+    return board[nextRow] === undefined
+  }))
+
+const pieceWillCollideLeft = (piece, board) =>
+  piece.shape.some((row, rowIndex) => row.some((cell, cellIndex) => {
+    const prevCell = cellIndex + piece.xOffset - 1
+
+    if (cell === undefined) return false
+    return  board[rowIndex][prevCell] === undefined
+  }))
+
+const pieceWillCollideRight = (piece, board) =>
+  piece.shape.some((row, rowIndex) => row.some((cell, cellIndex) => {
+    const nextCell = cellIndex + piece.xOffset + 1
+
+    if (cell === undefined) return false
+    return  board[rowIndex][nextCell] === undefined
+  }))
+
+const getNextPiece = () => pieces[Math.floor(Math.random() * pieces.length)]
+
 Mirror.model({
   name: 'piece',
   initialState,
@@ -72,7 +98,30 @@ Mirror.model({
     },
     rotate (piece) {
       return {...piece, shape: rotateShape(piece.shape)}
+    },
+    nextPiece () {
+      return getNextPiece()
     }
   },
-  effects: {}
+  effects: {
+    descend (_, getState) {
+      const { board, piece } = getState()
+      if (pieceWillCollideBelow(piece, board)) {
+        actions.board.stick(piece)
+        actions.piece.nextPiece()
+      } else {
+        actions.piece.moveDown()
+      }
+    },
+    left (_, getState) {
+      const { board, piece } = getState()
+      if (pieceWillCollideLeft(piece, board)) return
+      actions.piece.moveLeft()
+    },
+    right (_, getState) {
+      const { board, piece } = getState()
+      if (pieceWillCollideRight(piece, board)) return
+      actions.piece.moveRight()
+    }
+  }
 })
