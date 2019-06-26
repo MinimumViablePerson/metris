@@ -1,26 +1,29 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from 'react'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import Container from './components/Container'
+import Board from './components/Board'
+import Header from './components/Header'
+import Footer from './components/Footer'
+import { actions } from 'mirrorx/lib/mirror';
+
+const App = () => {
+
+  useEffect(() => {
+    const listener = window.addEventListener('keydown', e => {
+      if (e.key === 'ArrowLeft') actions.piece.moveLeft()
+      if (e.key === 'ArrowRight') actions.piece.moveRight()
+      if (e.key === 'ArrowUp') actions.piece.rotate()
+      if (e.key === 'ArrowDown') actions.piece.moveDown()
+    })
+    return () => window.removeEventListener('keydown', listener)
+  }, [])
+
+  return <Container>
+    <Header>Welcome to Metris</Header>
+    <Board />
+    <Footer>Made with ♥ by Nicolas</Footer>
+  </Container>
 }
 
-export default App;
+
+export default App
