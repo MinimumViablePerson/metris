@@ -1,26 +1,23 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 
 import Container from './components/Container'
-import Board from './components/Board'
+import Score from './components/Score'
+import Canvas from './components/Canvas'
 import Header from './components/Header'
 import Footer from './components/Footer'
-import { actions } from 'mirrorx/lib/mirror';
+import Gamepad from './components/Gamepad'
+
+import useGameLogic from './hooks/useGameLogic'
 
 const App = () => {
 
-  useEffect(() => {
-    const listener = window.addEventListener('keydown', e => {
-      if (e.key === 'ArrowLeft') actions.piece.left()
-      if (e.key === 'ArrowRight') actions.piece.right()
-      if (e.key === 'ArrowUp') actions.piece.rotate()
-      if (e.key === 'ArrowDown') actions.piece.descend()
-    })
-    return () => window.removeEventListener('keydown', listener)
-  }, [])
+  useGameLogic()
 
   return <Container>
     <Header>Welcome to Metris</Header>
-    <Board />
+    <Score />
+    <Canvas />
+    <Gamepad />
     <Footer>Made with ♥ by Nicolas</Footer>
   </Container>
 }
