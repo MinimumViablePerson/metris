@@ -1,4 +1,6 @@
 import './board'
 import './piece'
+import './piece2'
 import './score'
 import './nextPiece'
+import './nextPiece2'

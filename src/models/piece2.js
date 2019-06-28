@@ -70,55 +70,61 @@ const cannotRotate = (piece, board) => {
   }))
 }
 
-export const getNextPiece = (shapes, columns) => {
+export const getNextPiece = (shapes) => {
   const shape = shapes[Math.floor(Math.random() * shapes.length)]
-  const xOffset = columns - 3
+  const xOffset = 0
   const yOffset = 0
   return { shape, xOffset, yOffset }
 }
 
+const moveDown = piece => ({...piece, yOffset: piece.yOffset + 1})
+const moveRight = piece => ({...piece, xOffset: piece.xOffset + 1})
+const moveLeft = piece => ({...piece, xOffset: piece.xOffset - 1})
+const rotatePiece = piece => ({...piece, shape: rotateShape(piece.shape)})
+const newPiece = (_, newPiece) => newPiece
+
 Mirror.model({
-  name: 'piece',
+  name: 'piece2',
   initialState: getNextPiece(SHAPES, COLUMNS),
   reducers: {
-    moveDown: piece => ({...piece, yOffset: piece.yOffset + 1}),
-    moveRight: piece => ({...piece, xOffset: piece.xOffset + 1}),
-    moveLeft: piece => ({...piece, xOffset: piece.xOffset - 1}),
-    rotatePiece: piece => ({...piece, shape: rotateShape(piece.shape)}),
-    newPiece: (_, newPiece) => newPiece
+    moveDown,
+    moveRight,
+    moveLeft,
+    rotatePiece,
+    newPiece
   },
   effects: {
     descend (_, getState) {
-      const { piece, board } = getState()
-      if (pieceWillCollideBelow(piece, board)) {
-        actions.board.stickPiece(piece)
-        actions.piece.nextPiece()
+      const { piece2, board } = getState()
+      if (pieceWillCollideBelow(piece2, board)) {
+        actions.board.stickPiece(piece2)
+        actions.piece2.nextPiece()
       } else {
-        actions.piece.moveDown()
+        actions.piece2.moveDown()
       }
     },
     left (_, getState) {
-      const { piece, board } = getState()
-      if (pieceWillCollideLeft(piece, board)) return
-      actions.piece.moveLeft()
+      const { piece2, board } = getState()
+      if (pieceWillCollideLeft(piece2, board)) return
+      actions.piece2.moveLeft()
     },
     right (_, getState) {
-      const { piece, board } = getState()
-      if (pieceWillCollideRight(piece, board)) return
-      actions.piece.moveRight()
+      const { piece2, board } = getState()
+      if (pieceWillCollideRight(piece2, board)) return
+      actions.piece2.moveRight()
     },
     rotate (_, getState) {
-      const { piece, board } = getState()
-      if (cannotRotate(piece, board)) return
-      actions.piece.rotatePiece()
+      const { piece2, board } = getState()
+      if (cannotRotate(piece2, board)) return
+      actions.piece2.rotatePiece()
     },
     nextPiece (_, getState) {
-      const { board, nextPiece } = getState()
-      if (pieceOverlapsAnything(nextPiece, board)) {
+      const { board, nextPiece2 } = getState()
+      if (pieceOverlapsAnything(nextPiece2, board)) {
         console.error('Game over!')
       } else {
-        actions.piece.newPiece(nextPiece)
-        actions.nextPiece.getNextPiece()
+        actions.piece2.newPiece(nextPiece2)
+        actions.nextPiece2.getNextPiece()
       }
     }
   }

@@ -17,8 +17,9 @@ const App = () => {
   return <Container>
     <Header>Welcome to Metris</Header>
     <Score />
+    <NextPiece side='left' />
     <Canvas />
-    <NextPiece />
+    <NextPiece side='right' />
     <Gamepad />
     <Footer>Made with ♥ by Nicolas</Footer>
   </Container>

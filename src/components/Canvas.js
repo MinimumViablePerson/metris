@@ -38,18 +38,19 @@ const drawPiece = (ctx, piece) => {
   })
 }
 
-const Canvas = ({ board, piece }) => {
+const Canvas = ({ board, piece, piece2 }) => {
   const canvasRef = useRef()
 
   useEffect(() => {
     const ctx = canvasRef.current.getContext('2d')
     drawBoard(ctx, board)
     drawPiece(ctx, piece)
-  }, [board, piece])
+    drawPiece(ctx, piece2)
+  }, [board, piece, piece2])
 
   return <canvas ref={canvasRef} width={width} height={height}></canvas>
 }
 
-const mapStateToProps = ({ board, piece }) => ({ board, piece })
+const mapStateToProps = ({ board, piece, piece2 }) => ({ board, piece, piece2 })
 
 export default connect(mapStateToProps)(Canvas)
