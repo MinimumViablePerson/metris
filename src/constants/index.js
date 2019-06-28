@@ -1,5 +1,6 @@
 export const COLUMNS = 10
 export const ROWS = 20
+export const TILE_SIZE = 20
 
 export const COLORS = {
   red: '#C73E1D',

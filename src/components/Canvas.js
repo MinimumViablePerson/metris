@@ -1,32 +1,39 @@
 import React, { useEffect, useRef } from 'react'
 import { connect } from 'mirrorx'
 
-import { COLUMNS, ROWS, COLORS } from '../constants';
+import { COLUMNS, ROWS, COLORS, TILE_SIZE } from '../constants';
 
-const size = 20
-const width = COLUMNS * size
-const height = ROWS * size
+const width = COLUMNS * TILE_SIZE
+const height = ROWS * TILE_SIZE
+
+const drawSquare = ({ ctx, x, y, size, color }) => {
+  ctx.fillStyle = color
+  ctx.fillRect(x, y, size, size)
+}
 
 const drawBoard = (ctx, board) => {
   board.forEach((row, rowIndex) => {
     row.forEach((cell, cellIndex) => {
+      const x = cellIndex * TILE_SIZE
+      const y = rowIndex * TILE_SIZE
+      const size = TILE_SIZE - 2
       const color = COLORS[cell]
-      ctx.fillStyle = color
-      ctx.fillRect(cellIndex * size, rowIndex * size, size - 2, size - 2)
+
+      drawSquare({ ctx, x, y, size, color })
     })
   })
 }
 
-const drawPiece = (ctx, piece) => {
+const drawPiece = (ctx, piece) => {  
   piece.shape.forEach((row, rowIndex) => {
     row.forEach((cell, cellIndex) => {
       if (cell === undefined) return
-      const x = cellIndex + piece.xOffset
-      const y = rowIndex + piece.yOffset
-
+      const x = (cellIndex + piece.xOffset) * TILE_SIZE
+      const y = (rowIndex + piece.yOffset) * TILE_SIZE
+      const size = TILE_SIZE - 2
       const color = COLORS[cell]
-      ctx.fillStyle = color
-      ctx.fillRect(x * size, y * size, size - 2, size - 2)
+
+      drawSquare({ ctx, x, y, size, color })
     })
   })
 }
@@ -35,9 +42,7 @@ const Canvas = ({ board, piece }) => {
   const canvasRef = useRef()
 
   useEffect(() => {
-    const canvas = canvasRef.current
-    const ctx = canvas.getContext('2d')
-
+    const ctx = canvasRef.current.getContext('2d')
     drawBoard(ctx, board)
     drawPiece(ctx, piece)
   }, [board, piece])
@@ -45,4 +50,6 @@ const Canvas = ({ board, piece }) => {
   return <canvas ref={canvasRef} width={width} height={height}></canvas>
 }
 
-export default connect(({ board, piece }) => ({ board, piece }))(Canvas)
+const mapStateToProps = ({ board, piece }) => ({ board, piece })
+
+export default connect(mapStateToProps)(Canvas)
