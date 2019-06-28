@@ -5,11 +5,7 @@ import { actions } from 'mirrorx/lib/mirror';
 
 const initialState = [...Array(ROWS)].map(() => Array(COLUMNS).fill(''))
 
-// const countIf = (array, predicate) =>
-//   array.reduce((acc, item) => predicate(item) ? acc + 1 : acc, 0)
-
 const rowIsNotFull = row => row.some(cell => cell === '')
-// const rowIsFull = row => row.ever(cell => cell !== '')
 
 const clearEmptyRows = board => {
   let rowsCleared = 0

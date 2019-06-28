@@ -70,16 +70,16 @@ const cannotRotate = (piece, board) => {
   }))
 }
 
-const getNextPiece = shapes => {
+export const getNextPiece = (shapes, columns) => {
   const shape = shapes[Math.floor(Math.random() * shapes.length)]
-  const xOffset = Math.floor(COLUMNS / 2)
+  const xOffset = Math.floor(columns / 2)
   const yOffset = 0
   return { shape, xOffset, yOffset }
 }
 
 Mirror.model({
   name: 'piece',
-  initialState: getNextPiece(SHAPES),
+  initialState: getNextPiece(SHAPES, COLUMNS),
   reducers: {
     moveDown: piece => ({...piece, yOffset: piece.yOffset + 1}),
     moveRight: piece => ({...piece, xOffset: piece.xOffset + 1}),
@@ -113,12 +113,12 @@ Mirror.model({
       actions.piece.rotatePiece()
     },
     nextPiece (_, getState) {
-      const { board } = getState()
-      const piece = getNextPiece(SHAPES)
-      if (pieceOverlapsAnything(piece, board)) {
+      const { board, nextPiece } = getState()
+      if (pieceOverlapsAnything(nextPiece, board)) {
         console.error('Game over!')
       } else {
-        actions.piece.newPiece(piece)
+        actions.piece.newPiece(nextPiece)
+        actions.nextPiece.getNextPiece()
       }
     }
   }

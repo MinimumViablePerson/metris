@@ -6,6 +6,7 @@ import Canvas from './components/Canvas'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import Gamepad from './components/Gamepad'
+import NextPiece from './components/NextPiece'
 
 import useGameLogic from './hooks/useGameLogic'
 
@@ -17,6 +18,7 @@ const App = () => {
     <Header>Welcome to Metris</Header>
     <Score />
     <Canvas />
+    <NextPiece />
     <Gamepad />
     <Footer>Made with ♥ by Nicolas</Footer>
   </Container>
