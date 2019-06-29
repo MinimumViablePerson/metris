@@ -30,8 +30,8 @@ const NextPiece = ({ nextPiece }) => {
   </div>
 }
 
-const mapStateToProps = ({ nextPiece, nextPiece2}, { side }) => ({
-  nextPiece: side === 'right' ? nextPiece : nextPiece2
+const mapStateToProps = ({ nextLeftPiece, nextRightPiece}, { side }) => ({
+  nextPiece: side === 'left' ? nextLeftPiece : nextRightPiece
 })
 
 export default connect(mapStateToProps)(NextPiece)

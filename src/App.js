@@ -5,7 +5,6 @@ import Score from './components/Score'
 import Canvas from './components/Canvas'
 import Header from './components/Header'
 import Footer from './components/Footer'
-import Gamepad from './components/Gamepad'
 import NextPiece from './components/NextPiece'
 
 import useGameLogic from './hooks/useGameLogic'
@@ -20,7 +19,6 @@ const App = () => {
     <NextPiece side='left' />
     <Canvas />
     <NextPiece side='right' />
-    <Gamepad />
     <Footer>Made with ♥ by Nicolas</Footer>
   </Container>
 }

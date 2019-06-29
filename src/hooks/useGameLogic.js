@@ -10,15 +10,15 @@ const useGameLogic = () => {
     setInterval(() => setSpeed(speed * 0.9), 60000)
 
     const listener = window.addEventListener('keydown', e => {
-      if (e.key === 'ArrowLeft') actions.piece.left()
-      if (e.key === 'ArrowRight') actions.piece.right()
-      if (e.key === 'ArrowUp') actions.piece.rotate()
-      if (e.key === 'ArrowDown') actions.piece.descend()
+      if (e.key === 'ArrowLeft') actions.rightPiece.left()
+      if (e.key === 'ArrowRight') actions.rightPiece.right()
+      if (e.key === 'ArrowUp') actions.rightPiece.rotate()
+      if (e.key === 'ArrowDown') actions.rightPiece.descend()
 
-      if (e.key === 'a') actions.piece2.left()
-      if (e.key === 'd') actions.piece2.right()
-      if (e.key === 'w') actions.piece2.rotate()
-      if (e.key === 's') actions.piece2.descend()
+      if (e.key === 'a') actions.leftPiece.left()
+      if (e.key === 'd') actions.leftPiece.right()
+      if (e.key === 'w') actions.leftPiece.rotate()
+      if (e.key === 's') actions.leftPiece.descend()
     })
     return () => window.removeEventListener('keydown', listener)
   }, [])
@@ -26,8 +26,8 @@ const useGameLogic = () => {
   useEffect(() => {
     clearInterval(handle)
     setHandle(setInterval(() => {
-      actions.piece.descend()
-      actions.piece2.descend()
+      actions.rightPiece.descend()
+      actions.leftPiece.descend()
     }, speed))
     return () => clearInterval(handle)
   }, [speed])

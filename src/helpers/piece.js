@@ -1,8 +1,4 @@
-import Mirror, { actions } from 'mirrorx'
-
-import { SHAPES, COLUMNS } from '../constants'
-
-const rotateShape = shape => {
+export const rotateShape = shape => {
 	const rotatedShape = []
 	let currentIndex = 0
 
@@ -20,7 +16,7 @@ const rotateShape = shape => {
 	return rotatedShape
 }
 
-const pieceWillCollideBelow = (piece, board) =>
+export const pieceWillCollideBelow = (piece, board) =>
   piece.shape.some((row, rowIndex) => row.some((cell, cellIndex) => {
     if (cell === undefined) return false
   
@@ -32,7 +28,7 @@ const pieceWillCollideBelow = (piece, board) =>
     return nextRow[nextCellIndex] !== ''
   }))
 
-const pieceWillCollideLeft = (piece, board) =>
+export const pieceWillCollideLeft = (piece, board) =>
   piece.shape.some((row, rowIndex) => row.some((cell, cellIndex) => {
     const nextRowIndex = rowIndex + piece.yOffset
     const prevCellIndex = cellIndex + piece.xOffset - 1
@@ -41,7 +37,7 @@ const pieceWillCollideLeft = (piece, board) =>
     return board[nextRowIndex][prevCellIndex] !== ''
   }))
 
-const pieceWillCollideRight = (piece, board) =>
+export const pieceWillCollideRight = (piece, board) =>
   piece.shape.some((row, rowIndex) => row.some((cell, cellIndex) => {
     const nextRowIndex = rowIndex + piece.yOffset
     const nextCellIndex = cellIndex + piece.xOffset + 1
@@ -50,7 +46,7 @@ const pieceWillCollideRight = (piece, board) =>
     return board[nextRowIndex][nextCellIndex] !== ''
   }))
 
-const pieceOverlapsAnything = (piece, board) =>
+export const pieceOverlapsAnything = (piece, board) =>
   piece.shape.some((row, rowIndex) => row.some((cell, cellIndex) => {
     rowIndex += piece.yOffset
     cellIndex += piece.xOffset
@@ -59,7 +55,7 @@ const pieceOverlapsAnything = (piece, board) =>
     return board[rowIndex][cellIndex] !== ''
   }))
 
-const cannotRotate = (piece, board) => {
+export const cannotRotate = (piece, board) => {
   const shape = rotateShape(piece.shape)
   return shape.some((row, rowIndex) => row.some((cell, cellIndex) => {
     const nextRowIndex = rowIndex + piece.yOffset
@@ -70,56 +66,26 @@ const cannotRotate = (piece, board) => {
   }))
 }
 
-export const getNextPiece = (shapes, columns) => {
+export const getNextLeftPiece = (shapes) => {
+  const shape = shapes[Math.floor(Math.random() * shapes.length)]
+  const xOffset = 0
+  const yOffset = 0
+  return { shape, xOffset, yOffset }
+}
+
+export const getNextRightPiece = (shapes, columns) => {
   const shape = shapes[Math.floor(Math.random() * shapes.length)]
   const xOffset = columns - 3
   const yOffset = 0
   return { shape, xOffset, yOffset }
 }
 
-Mirror.model({
-  name: 'piece',
-  initialState: getNextPiece(SHAPES, COLUMNS),
-  reducers: {
-    moveDown: piece => ({...piece, yOffset: piece.yOffset + 1}),
-    moveRight: piece => ({...piece, xOffset: piece.xOffset + 1}),
-    moveLeft: piece => ({...piece, xOffset: piece.xOffset - 1}),
-    rotatePiece: piece => ({...piece, shape: rotateShape(piece.shape)}),
-    newPiece: (_, newPiece) => newPiece
-  },
-  effects: {
-    descend (_, getState) {
-      const { piece, board } = getState()
-      if (pieceWillCollideBelow(piece, board)) {
-        actions.board.stickPiece(piece)
-        actions.piece.nextPiece()
-      } else {
-        actions.piece.moveDown()
-      }
-    },
-    left (_, getState) {
-      const { piece, board } = getState()
-      if (pieceWillCollideLeft(piece, board)) return
-      actions.piece.moveLeft()
-    },
-    right (_, getState) {
-      const { piece, board } = getState()
-      if (pieceWillCollideRight(piece, board)) return
-      actions.piece.moveRight()
-    },
-    rotate (_, getState) {
-      const { piece, board } = getState()
-      if (cannotRotate(piece, board)) return
-      actions.piece.rotatePiece()
-    },
-    nextPiece (_, getState) {
-      const { board, nextPiece } = getState()
-      if (pieceOverlapsAnything(nextPiece, board)) {
-        console.error('Game over!')
-      } else {
-        actions.piece.newPiece(nextPiece)
-        actions.nextPiece.getNextPiece()
-      }
-    }
-  }
-})
+export const moveDown = piece => ({...piece, yOffset: piece.yOffset + 1})
+
+export const moveRight = piece => ({...piece, xOffset: piece.xOffset + 1})
+
+export const moveLeft = piece => ({...piece, xOffset: piece.xOffset - 1})
+
+export const rotatePiece = piece => ({...piece, shape: rotateShape(piece.shape)})
+
+export const newPiece = (_, newPiece) => newPiece

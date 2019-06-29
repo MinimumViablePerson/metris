@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { connect } from 'mirrorx'
 
-import { COLUMNS, ROWS, COLORS, TILE_SIZE } from '../constants';
+import { COLUMNS, ROWS, COLORS, TILE_SIZE } from '../constants'
 
 const width = COLUMNS * TILE_SIZE
 const height = ROWS * TILE_SIZE
@@ -38,19 +38,23 @@ const drawPiece = (ctx, piece) => {
   })
 }
 
-const Canvas = ({ board, piece, piece2 }) => {
+const Canvas = ({ board, leftPiece, rightPiece }) => {
   const canvasRef = useRef()
 
   useEffect(() => {
     const ctx = canvasRef.current.getContext('2d')
     drawBoard(ctx, board)
-    drawPiece(ctx, piece)
-    drawPiece(ctx, piece2)
-  }, [board, piece, piece2])
+    drawPiece(ctx, leftPiece)
+    drawPiece(ctx, rightPiece)
+  }, [board, leftPiece, rightPiece])
 
   return <canvas ref={canvasRef} width={width} height={height}></canvas>
 }
 
-const mapStateToProps = ({ board, piece, piece2 }) => ({ board, piece, piece2 })
+const mapStateToProps = ({ board, leftPiece, rightPiece }) => ({
+  board,
+  leftPiece,
+  rightPiece
+})
 
 export default connect(mapStateToProps)(Canvas)
