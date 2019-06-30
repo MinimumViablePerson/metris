@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'mirrorx'
 
 import Container from './components/Container'
-import Score from './components/Score'
+import GameInfo from './components/GameInfo'
 import Canvas from './components/Canvas'
 import Header from './components/Header'
 import Footer from './components/Footer'
@@ -18,8 +18,7 @@ const App = ({ tickSpeed }) => {
 
   return <Container>
     <Header>Welcome to Metris</Header>
-    <h3>Tick speed: {tickSpeed}</h3>
-    <Score />
+    <GameInfo />
     <NextPiece side='left' />
     <Canvas />
     <NextPiece side='right' />
