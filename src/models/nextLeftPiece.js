@@ -8,6 +8,5 @@ Mirror.model({
   initialState: getNextLeftPiece(SHAPES, COLUMNS),
   reducers: {
     getNextPiece: () => getNextLeftPiece(SHAPES, COLUMNS)
-  },
-  effects: {}
+  }
 })

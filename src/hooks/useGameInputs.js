@@ -1,14 +1,8 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { actions } from 'mirrorx'
 
-const useGameLogic = () => {
-
-  const [speed, setSpeed] = useState(1000)
-  const [handle, setHandle] = useState(null)
-
+const useGameInputs = () => {
   useEffect(() => {
-    setInterval(() => setSpeed(speed * 0.9), 60000)
-
     const listener = window.addEventListener('keydown', e => {
       if (e.key === 'ArrowLeft') actions.rightPiece.left()
       if (e.key === 'ArrowRight') actions.rightPiece.right()
@@ -20,17 +14,11 @@ const useGameLogic = () => {
       if (e.key === 'w') actions.leftPiece.rotate()
       if (e.key === 's') actions.leftPiece.descend()
     })
-    return () => window.removeEventListener('keydown', listener)
-  }, [])
 
-  useEffect(() => {
-    clearInterval(handle)
-    setHandle(setInterval(() => {
-      actions.rightPiece.descend()
-      actions.leftPiece.descend()
-    }, speed))
-    return () => clearInterval(handle)
-  }, [speed])
+    return () => {
+      window.removeEventListener('keydown', listener)
+    }
+  }, [])
 }
 
-export default useGameLogic
+export default useGameInputs

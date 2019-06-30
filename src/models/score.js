@@ -5,6 +5,5 @@ Mirror.model({
   initialState: 0,
   reducers: {
     clearedRows: (score, amount) => score + ((amount * 100) * amount)
-  },
-  effects: {}
+  }
 })

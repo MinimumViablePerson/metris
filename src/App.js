@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'mirrorx'
 
 import Container from './components/Container'
 import Score from './components/Score'
@@ -7,14 +8,17 @@ import Header from './components/Header'
 import Footer from './components/Footer'
 import NextPiece from './components/NextPiece'
 
-import useGameLogic from './hooks/useGameLogic'
+import useGameInputs from './hooks/useGameInputs'
+import useGameTicker from './hooks/useGameTicker'
 
-const App = () => {
+const App = ({ tickSpeed }) => {
 
-  useGameLogic()
+  useGameInputs()
+  useGameTicker(tickSpeed, 60)
 
   return <Container>
     <Header>Welcome to Metris</Header>
+    <h3>Tick speed: {tickSpeed}</h3>
     <Score />
     <NextPiece side='left' />
     <Canvas />
@@ -23,5 +27,6 @@ const App = () => {
   </Container>
 }
 
+const mapStateToProps = ({ tickSpeed }) => ({ tickSpeed })
 
-export default App
+export default connect(mapStateToProps)(App)
