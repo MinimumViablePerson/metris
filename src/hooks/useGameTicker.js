@@ -1,7 +1,7 @@
 import { actions } from 'mirrorx'
 import { useEffect } from 'react'
 
-const useGameTicker = (ms, interval) => {
+const useGameTicker = (ms, interval, playing) => {
   useEffect(() => {
     const handle = setInterval(actions.tickSpeed.next, interval * 1000)
     return () => clearInterval(handle)
@@ -9,6 +9,7 @@ const useGameTicker = (ms, interval) => {
 
   useEffect(() => {
     const tick = () => {
+      if (!playing) return
       actions.rightPiece.descend()
       actions.leftPiece.descend()
     }
@@ -16,7 +17,7 @@ const useGameTicker = (ms, interval) => {
     const handle = setInterval(tick, ms)
 
     return () => clearInterval(handle)
-  }, [ms])
+  }, [ms, playing])
 }
 
 export default useGameTicker
