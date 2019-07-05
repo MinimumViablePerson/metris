@@ -52,11 +52,11 @@ const Y = {
 }
 
 const PlayCanvas = props =>
-  <div onClick={actions.playing.play}>
+  <div style={{ marginTop: '95px' }} onClick={actions.playing.play}>
     <Canvas {...props} />
   </div>
 
-const mapStateToProps = ({ board, leftPiece, rightPiece }) => ({
+const mapStateToProps = ({ board }) => ({
   board,
   pieces: [P, L, A, Y]
 })
