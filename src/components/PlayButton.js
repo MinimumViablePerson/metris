@@ -52,7 +52,7 @@ const Y = {
 }
 
 const PlayCanvas = props =>
-  <div style={{ marginTop: '95px' }} onClick={actions.playing.play}>
+  <div onClick={actions.playing.play}>
     <Canvas {...props} />
   </div>
 

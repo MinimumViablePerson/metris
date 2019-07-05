@@ -4,6 +4,7 @@ Mirror.model({
   name: 'playing',
   initialState: false,
   reducers: {
-    play: () => true
+    play: () => true,
+    stop: () => false
   }
 })

@@ -1,7 +1,8 @@
 import Mirror from 'mirrorx'
 
 import { ROWS, COLUMNS } from '../constants'
-import { actions } from 'mirrorx/lib/mirror';
+import { actions } from 'mirrorx'
+import API from '../services/API'
 
 const initialState = [...Array(ROWS)].map(() => Array(COLUMNS).fill(''))
 
@@ -33,7 +34,8 @@ Mirror.model({
   name: 'board',
   initialState,
   reducers: {
-    updateBoard: (_, newBoard) => newBoard
+    update: (_, newBoard) => newBoard,
+    reset: () => initialState
   },
   effects: {
     stickPiece (piece, getState) {
@@ -42,7 +44,18 @@ Mirror.model({
       const { rowsCleared, newBoard } = clearEmptyRows(withPiece)
 
       actions.score.clearedRows(rowsCleared)
-      actions.board.updateBoard(newBoard)
+      actions.board.update(newBoard)
+    },
+    async gameOver (_, getState) {
+      const { player, score } = getState()
+      API.createScore(player, score)
+      actions.board.reset()
+      actions.leftPiece.reset()
+      actions.rightPiece.reset()
+      actions.tickSpeed.reset()
+      actions.score.reset()
+      actions.leaderboard.fetch()
+      actions.playing.stop()
     }
   }
 })

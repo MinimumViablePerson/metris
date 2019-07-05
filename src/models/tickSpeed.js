@@ -1,9 +1,12 @@
 import Mirror from 'mirrorx'
 
+const initialState = 1000
+
 Mirror.model({
   name: 'tickSpeed',
-  initialState: 1000,
+  initialState,
   reducers: {
-    next: speed => Math.floor(speed * 0.9)
+    next: speed => Math.floor(speed * 0.9),
+    reset: () => initialState
   }
 })

@@ -24,7 +24,8 @@ Mirror.model({
     moveRight,
     moveLeft,
     rotatePiece,
-    newPiece
+    newPiece,
+    reset: () => getNextLeftPiece(SHAPES)
   },
   effects: {
     descend (_, getState) {
@@ -54,7 +55,7 @@ Mirror.model({
     nextPiece (_, getState) {
       const { board, nextLeftPiece } = getState()
       if (pieceOverlapsAnything(nextLeftPiece, board)) {
-        console.error('Game over!')
+        actions.board.gameOver()
       } else {
         actions.leftPiece.newPiece(nextLeftPiece)
         actions.nextLeftPiece.getNextPiece()
