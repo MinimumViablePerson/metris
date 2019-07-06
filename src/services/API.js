@@ -3,9 +3,13 @@ const url = 'https://metris-leaderboard.herokuapp.com/v1/graphql'
 const post = (url, data) =>
 	fetch(url, {
 		method: 'POST',
-		headers: { 'Content-Type': 'application/json' },
+		headers: {
+      'Content-Type': 'application/json',
+      'x-hasura-admin-secret': ''
+    },
 		body: JSON.stringify(data)
   }).then(resp => resp.json())
+  .catch(console.log)
 
 const getTopFiveScores = () =>
   post(url, { query: `
