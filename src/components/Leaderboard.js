@@ -2,6 +2,8 @@ import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import { actions, connect } from 'mirrorx'
 
+import Loading from './Loading'
+
 const Leaderboard = ({ className, leaderboard }) => {
   useEffect(() => {
     actions.leaderboard.fetch()
@@ -15,20 +17,28 @@ const Leaderboard = ({ className, leaderboard }) => {
     </tr>
   )
 
+  const table = <table>
+    <thead>
+      <tr>
+        <th id='ranking-header'>Ranking</th>
+        <th id='name-header'>Name</th>
+        <th id='score-header'>Score</th>
+      </tr>
+    </thead>
+    <tbody>
+      { entries }
+    </tbody>
+  </table>
+
+  const leaderboardIsEmpty = leaderboard.length === 0
+
   return <div className={className}>
     <h3>Leaderboard</h3>
-    <table>
-      <thead>
-        <tr>
-          <th id='ranking-header'>Ranking</th>
-          <th id='name-header'>Name</th>
-          <th id='score-header'>Score</th>
-        </tr>
-      </thead>
-      <tbody>
-        { entries }
-      </tbody>
-    </table>
+    {
+      leaderboardIsEmpty
+        ? <Loading />
+        : table
+    }
   </div>
 }
 
