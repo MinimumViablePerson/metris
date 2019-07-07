@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react'
 import { connect } from 'mirrorx'
 
 import { COLUMNS, ROWS, COLORS, TILE_SIZE } from '../constants'
+import useFadeIn from '../hooks/useFadeIn';
 
 const width = COLUMNS * TILE_SIZE
 const height = ROWS * TILE_SIZE
@@ -41,13 +42,15 @@ const drawPiece = (ctx, piece) => {
 export const Canvas = ({ board, pieces }) => {
   const canvasRef = useRef()
 
+  const style = useFadeIn('200ms')
+
   useEffect(() => {
     const ctx = canvasRef.current.getContext('2d')
     drawBoard(ctx, board)
     pieces.forEach(piece => drawPiece(ctx, piece))
   }, [board, pieces])
 
-  return <canvas ref={canvasRef} width={width} height={height}></canvas>
+  return <canvas style={style} ref={canvasRef} width={width} height={height}></canvas>
 }
 
 const mapStateToProps = ({ board, leftPiece, rightPiece }) => ({

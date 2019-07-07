@@ -5,28 +5,35 @@ import { COLORS } from '../constants';
 const animation = keyframes`
   0% {
     opacity: 1;
-    /* transform: rotate(0deg); */
   }
 
   100% {
     opacity: 0;
-    /* transform: rotate(10deg); */
   }
 `
 
 const Loading = ({ className }) =>
-  <div className={className}>
-    <div id='one'></div>
-    <div id='two'></div>
-    <div id='three'></div>
-    <div id='four'></div>
+  <div className={`${className} loading`}>
+    <div className='wrapper'>
+      <div className='tile' id='one'></div>
+      <div className='tile' id='two'></div>
+      <div className='tile' id='three'></div>
+      <div className='tile' id='four'></div>
+    </div>
   </div>
 
 const StyledLoading = styled(Loading)`
-
+  
+  width: 100%;
   display: flex;
+  justify-content: center;
+  align-items: center;
 
-  div {
+  .wrapper {
+    display: flex;
+  }
+
+  .tile {
     width: 20px;
     height: 20px;
     margin: 2px;

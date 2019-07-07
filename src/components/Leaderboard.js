@@ -9,6 +9,8 @@ const Leaderboard = ({ className, leaderboard }) => {
     actions.leaderboard.fetch()
   }, [])
 
+  const leaderboardIsEmpty = leaderboard.length === 0
+
   const entries = leaderboard.map((entry, index) =>
     <tr key={entry.id}>
       <td>{index + 1}</td>
@@ -17,7 +19,7 @@ const Leaderboard = ({ className, leaderboard }) => {
     </tr>
   )
 
-  const table = <table>
+  const table = <table style={{ opacity: leaderboardIsEmpty ? 0 : 1, transition: '500ms' }}>
     <thead>
       <tr>
         <th id='ranking-header'>Ranking</th>
@@ -30,15 +32,10 @@ const Leaderboard = ({ className, leaderboard }) => {
     </tbody>
   </table>
 
-  const leaderboardIsEmpty = leaderboard.length === 0
-
   return <div className={className}>
     <h3>Leaderboard</h3>
-    {
-      leaderboardIsEmpty
-        ? <Loading />
-        : table
-    }
+    { leaderboardIsEmpty && <Loading /> }
+    { table }
   </div>
 }
 
